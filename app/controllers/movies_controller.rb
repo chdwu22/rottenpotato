@@ -12,6 +12,9 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
+    if params[:sort_by]!=nil
+      @movies.order!(params[:sort_by].to_sym)
+    end
   end
 
   def new
