@@ -14,6 +14,7 @@ class MoviesController < ApplicationController
     @movies = Movie.all
     if params[:sort_by]!=nil
       @movies.order!(params[:sort_by].to_sym)
+      instance_variable_set("@#{params[:sort_by]}_active", "hilite")
     end
   end
 
