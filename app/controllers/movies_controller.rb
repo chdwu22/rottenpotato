@@ -12,19 +12,20 @@ class MoviesController < ApplicationController
   
 ##################################################################
   def index
-    #@previous_selected_ratings = 
-    @selected_ratings = (params[:ratings]==nil ? [] : params[:ratings])
+    @all_ratings= Movie.get_ratings
+    @selected_ratings = params[:ratings]  || {}
+    @order  = params[:sort_by] || :id
+    
     if @selected_ratings.empty? == false
-      @movies = Movie.where(:rating => @selected_ratings.keys)
+      @movies = Movie.where(:rating => @selected_ratings.keys).order(@order)
     else
-      @movies = Movie.all
+      @movies = Movie.all.order(@order)
+      @selected_ratings=@all_ratings
     end
     
-    @all_ratings= Movie.get_ratings
-    if params[:sort_by]!=nil
-      @movies.order!(params[:sort_by].to_sym)
-      instance_variable_set("@#{params[:sort_by]}_active", "hilite")
-    end
+    #flash[:notice] = "#{params[:sort_by].present?}"
+    
+    instance_variable_set("@#{params[:sort_by]}_active", "hilite")
   end
 
 #################################################################
