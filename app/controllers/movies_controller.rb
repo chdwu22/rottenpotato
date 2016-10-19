@@ -12,8 +12,12 @@ class MoviesController < ApplicationController
   
 ##################################################################
   def index
+    if(params[:commit]=='Refresh')
+      session[:ratings] = params[:ratings] || {}
+    end
+    
     @all_ratings= Movie.get_ratings
-    @selected_ratings = params[:ratings]  || {}
+    @selected_ratings = session[:ratings]
     @order  = params[:sort_by] || :id
     
     if @selected_ratings.empty? == false
@@ -22,8 +26,6 @@ class MoviesController < ApplicationController
       @movies = Movie.all.order(@order)
       @selected_ratings=@all_ratings
     end
-    
-    #flash[:notice] = "#{params[:sort_by].present?}"
     
     instance_variable_set("@#{params[:sort_by]}_active", "hilite")
   end
