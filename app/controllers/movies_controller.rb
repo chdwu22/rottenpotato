@@ -27,7 +27,6 @@ class MoviesController < ApplicationController
       @selected_ratings=@all_ratings
     end
     
-    
     instance_variable_set("@#{params[:sort_by]}_active", "hilite")
   end
 
